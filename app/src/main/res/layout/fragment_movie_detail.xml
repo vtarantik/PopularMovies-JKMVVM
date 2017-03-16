@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+
+		<variable
+			name="viewModel" type="com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieDetailFragmentViewModel"/>
+
+	</data>
+
+	<LinearLayout
+		android:layout_width="match_parent" android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:posterUrl="@{viewModel.movie.backdrop}"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:orientation="vertical">
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/ltGrey" />
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:padding="@dimen/global_spacing_single">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/movie_detail_release_date"
+					android:textColor="@android:color/black" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@android:color/black"
+					android:text="@{viewModel.movie.releaseDate}" />
+			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/ltGrey" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:padding="@dimen/global_spacing_single">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textStyle="bold"
+					android:text="@string/movie_detail_rating"
+					android:textColor="@android:color/black" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@android:color/black"
+					android:text='@{String.format("%.1f",viewModel.movie.rating)}'/>
+			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/ltGrey" />
+
+			<ScrollView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="@android:color/black"
+					android:padding="@dimen/global_spacing_single"
+					android:text="@{viewModel.movie.overview}"/>
+			</ScrollView>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="@color/ltGrey" />
+		</LinearLayout>
+
+	</LinearLayout>
+
+</layout>

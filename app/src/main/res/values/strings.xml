@@ -1,0 +1,7 @@
+<resources>
+	<string name="app_name">PopularMovies-JKMVVM</string>
+
+	<string name="error_no_data">No data to show</string>
+	<string name="movie_detail_rating">Rating:</string>
+	<string name="movie_detail_release_date">Release date:</string>
+</resources>

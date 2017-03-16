@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<data>
+
+		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+
+		<import type="com.example.vtarantik.popularmovies_jkmvvm.utility.BindingUtility.RecyclerLayout"/>
+
+		<import type="com.example.vtarantik.popularmovies_jkmvvm.utility.BindingUtility.RecyclerDecoration"/>
+
+		<variable
+			name="viewModel" type="com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieListFragmentViewModel"/>
+
+	</data>
+
+	<cz.kinst.jakub.view.SimpleStatefulLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:orientation="vertical"
+		>
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/movie_list"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:recyclerLayout="@{RecyclerLayout.LINEAR_VERTICAL}"
+				app:recyclerDecoration="@{RecyclerDecoration.LINEAR_DIVIDER}"
+				app:layoutManager="@{LayoutManagers.linear()}"
+				app:items="@{viewModel.movies}"
+				app:itemBinding="@{viewModel.itemBinding}">
+
+			</android.support.v7.widget.RecyclerView>
+		</FrameLayout>
+
+	</cz.kinst.jakub.view.SimpleStatefulLayout>
+
+</layout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="global_spacing_half">4dp</dimen>
+	<dimen name="global_spacing_single">8dp</dimen>
+	<dimen name="global_spacing_double">16dp</dimen>
+
+	<dimen name="global_textsize_18">18sp</dimen>
+
+	<dimen name="global_textsize_14">14sp</dimen>
+</resources>
