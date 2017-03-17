@@ -6,7 +6,7 @@
 	<data>
 
 		<variable
-			name="viewModel" type="com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieListActivityViewModel"/>
+			name="viewModel" type="com.example.vtarantik.popularmovies_jkmvvm.viewmodel.SettingsActivityViewModel"/>
 
 	</data>
 
@@ -21,13 +21,13 @@
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			android:elevation="@dimen/toolbar_elevation"
-			app:title="@string/movies"
+			app:title="@string/action_settings"
 			style="@style/Widget.Movies.Toolbar">
 
 		</android.support.v7.widget.Toolbar>
 
 		<FrameLayout
-			android:id="@+id/activity_movie_list_fragment_container"
+			android:id="@+id/activity_settings_fragment_container"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
@@ -38,4 +38,3 @@
 
 
 </layout>
-

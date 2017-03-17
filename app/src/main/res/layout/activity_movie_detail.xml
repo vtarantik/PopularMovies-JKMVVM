@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
 
@@ -13,6 +13,16 @@
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
+
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:elevation="@dimen/toolbar_elevation"
+			app:title="@{viewModel.movie.title}"
+			style="@style/Widget.Movies.Toolbar">
+
+		</android.support.v7.widget.Toolbar>
 
 		<FrameLayout
 			android:id="@+id/activity_movie_detail_fragment_container"

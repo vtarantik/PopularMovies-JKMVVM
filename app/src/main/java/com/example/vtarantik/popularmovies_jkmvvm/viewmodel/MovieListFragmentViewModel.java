@@ -27,7 +27,7 @@ public class MovieListFragmentViewModel extends ViewModel {
 
 	public final ObservableArrayList<Movie> movies = new ObservableArrayList<>();
 
-	public final ItemBinding<Movie> itemBinding = ItemBinding.of(BR.item, R.layout.movie_row);
+	public final ItemBinding<Movie> itemBinding = ItemBinding.of(BR.item, R.layout.movie_tile);
 
 	public SimpleStatefulLayout.StateController stateController;
 

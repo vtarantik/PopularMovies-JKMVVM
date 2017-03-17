@@ -1,5 +1,9 @@
 package com.example.vtarantik.popularmovies_jkmvvm.viewmodel;
 
+import android.databinding.ObservableField;
+
+import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
+
 import cz.kinst.jakub.viewmodelbinding.ViewModel;
 
 
@@ -8,4 +12,7 @@ import cz.kinst.jakub.viewmodelbinding.ViewModel;
  */
 
 public class MovieDetailActivityViewModel extends ViewModel {
+
+	public final ObservableField<Movie> movie = new ObservableField<>();
+
 }

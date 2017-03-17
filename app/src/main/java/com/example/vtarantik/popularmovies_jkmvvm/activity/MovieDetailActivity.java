@@ -34,8 +34,18 @@ public class MovieDetailActivity extends ViewModelActivity<ActivityMovieDetailBi
 		setupViewModel(R.layout.activity_movie_detail,MovieDetailActivityViewModel.class);
 		super.onCreate(savedInstanceState);
 
+		setSupportActionBar(getBinding().toolbar);
+
 		replaceFragment(com.example.vtarantik.popularmovies_jkmvvm.fragment.MovieDetailFragment.class.getName());
 	}
+
+
+	@Override
+	public void onViewModelInitialized(MovieDetailActivityViewModel viewModel) {
+		super.onViewModelInitialized(viewModel);
+		getViewModel().movie.set(getIntent().getParcelableExtra(EXTRA_MOVIE));
+	}
+
 
 	private void replaceFragment(String fragmentName) {
 		FragmentManager fm = getSupportFragmentManager();

@@ -6,10 +6,6 @@
 
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 
-		<import type="com.example.vtarantik.popularmovies_jkmvvm.utility.BindingUtility.RecyclerLayout"/>
-
-		<import type="com.example.vtarantik.popularmovies_jkmvvm.utility.BindingUtility.RecyclerDecoration"/>
-
 		<variable
 			name="viewModel" type="com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieListFragmentViewModel"/>
 
@@ -31,9 +27,7 @@
 				android:id="@+id/movie_list"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				app:recyclerLayout="@{RecyclerLayout.LINEAR_VERTICAL}"
-				app:recyclerDecoration="@{RecyclerDecoration.LINEAR_DIVIDER}"
-				app:layoutManager="@{LayoutManagers.linear()}"
+				app:layoutManager="@{LayoutManagers.grid(2)}"
 				app:items="@{viewModel.movies}"
 				app:itemBinding="@{viewModel.itemBinding}">
 
