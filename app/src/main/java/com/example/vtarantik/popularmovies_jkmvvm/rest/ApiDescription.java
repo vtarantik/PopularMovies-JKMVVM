@@ -21,7 +21,7 @@ public interface ApiDescription {
 			@Query("page") int pageIndex
 	);
 
-	@GET("3/search/top_rated")
+	@GET("3/movie/top_rated")
 	Observable<MovieResponse> getTopRatedMovies(
 			@Query("api_key") String apiKey,
 			@Query("page") int pageIndex

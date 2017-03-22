@@ -1,5 +1,6 @@
 package com.example.vtarantik.popularmovies_jkmvvm.interactor;
 
+import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieResponse;
 
 import rx.Observable;
@@ -10,5 +11,5 @@ import rx.Observable;
  */
 
 public interface IApiInteractor {
-	public Observable<MovieResponse> getPopularMovies();
+	Observable<MovieResponse> getMovies(Category category);
 }

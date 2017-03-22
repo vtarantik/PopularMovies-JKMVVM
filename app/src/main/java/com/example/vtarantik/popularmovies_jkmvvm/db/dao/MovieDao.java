@@ -2,8 +2,11 @@ package com.example.vtarantik.popularmovies_jkmvvm.db.dao;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
+import com.example.vtarantik.popularmovies_jkmvvm.db.model.Favourite;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieMapper;
+import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieResponse;
 import com.hannesdorfmann.sqlbrite.dao.Dao;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -19,23 +22,6 @@ import rx.Observable;
 public class MovieDao extends Dao {
 	private static final String TAG = MovieDao.class.getSimpleName();
 
-	public Observable<Boolean> insertInBatch(List<Movie> data) {
-		return Observable.create(sub -> {
-			BriteDatabase.Transaction t = newTransaction();
-			try {
-				for(Movie d: data) {
-					insertItem(d);
-				}
-				t.markSuccessful();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				t.end();
-			}
-			sub.onNext(true);
-			sub.onCompleted();
-		});
-	}
 
 	@Override
 	public void createTable(SQLiteDatabase database) {
@@ -57,6 +43,35 @@ public class MovieDao extends Dao {
 
 	}
 
+
+	public Observable<MovieResponse> insertInBatch(MovieResponse data, Category category) {
+		return Observable.create(sub -> {
+			BriteDatabase.Transaction t = newTransaction();
+			try {
+				for(Movie movie: data.getMovies()) {
+					insertMovie(movie,category);
+				}
+				t.markSuccessful();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				t.end();
+			}
+			sub.onNext(data);
+			sub.onCompleted();
+		});
+	}
+
+	public long insertMovie(Movie movie, Category category){
+		long movieResult = insertItem(movie);
+
+		if(movieResult!=-1){
+			return db.insert(category.getTableName(),MovieMapper.contentValues().id(movie.getId()).build(),SQLiteDatabase.CONFLICT_IGNORE);
+		}
+
+		return movieResult;
+	}
+
 	public long insertItem(Movie movie) {
 		return db.insert(Movie.TABLE_NAME,
 				MovieMapper.contentValues()
@@ -70,27 +85,20 @@ public class MovieDao extends Dao {
 						.backdrop(movie.getBackdrop())
 						.poster(movie.getPoster())
 						.build(), SQLiteDatabase.CONFLICT_REPLACE);
+
 	}
 
-	public Observable<List<Movie>> getPopularMovies() {
-		return query(SELECT("*").FROM(Movie.TABLE_NAME).ORDER_BY(Movie.COL_POPULARITY+" DESC"))
+
+	public Observable<List<Movie>> getMovies(Category category) {
+		return query(SELECT("*").FROM(Movie.TABLE_NAME)
+				.NATURAL_INNER_JOIN(category.getTableName()))
 				.run()
 				.mapToList(MovieMapper.MAPPER);
 	}
 
-	public Observable<List<Movie>> getTopRatedMovies() {
-		return query(SELECT("*").FROM(Movie.TABLE_NAME).ORDER_BY(Movie.COL_POPULARITY+" DESC"))
-				.run()
-				.mapToList(MovieMapper.MAPPER);
-	}
-
-	public Observable<List<Movie>> getFavouriteMovies() {
-		return query(SELECT("*").FROM(Movie.TABLE_NAME).ORDER_BY(Movie.COL_POPULARITY+" DESC"))
-				.run()
-				.mapToList(MovieMapper.MAPPER);
-	}
 
 	public long clearTable() {
 		return db.delete(Movie.TABLE_NAME, null);
 	}
+
 }
