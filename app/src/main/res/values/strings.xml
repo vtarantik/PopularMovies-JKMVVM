@@ -12,5 +12,6 @@
 	<string name="pref_sort_popular">Popular</string>
 	<string name="pref_sort_top_rated">Top rated</string>
 	<string name="pref_sort_favourite">Favourite</string>
+	<string name="overview">Overview</string>
 
 </resources>

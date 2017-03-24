@@ -19,6 +19,11 @@ public final class BindingUtility {
 
 	private static final String POSTER_PATH = "http://image.tmdb.org/t/p/w185";
 
+	public enum RecyclerDecoration
+	{
+		LINEAR_DIVIDER
+	}
+
 	@BindingAdapter({"bind:imageUrl"})
 	public static void loadImage(ImageView view, String url) {
 		Picasso.with(view.getContext())
@@ -35,5 +40,22 @@ public final class BindingUtility {
 				.fit().centerCrop()
 				.into(view);
 
+	}
+
+	@BindingAdapter({"recyclerDecoration"})
+	public static void setRecyclerDecoration(RecyclerView recyclerView, RecyclerDecoration recyclerDecoration)
+	{
+		RecyclerView.ItemDecoration itemDecoration;
+
+		if(recyclerDecoration == RecyclerDecoration.LINEAR_DIVIDER)
+		{
+			itemDecoration = new DividerItemDecoration(recyclerView.getContext(),DividerItemDecoration.VERTICAL);
+		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
+
+		recyclerView.addItemDecoration(itemDecoration);
 	}
 }

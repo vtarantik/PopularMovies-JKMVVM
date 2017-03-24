@@ -5,7 +5,7 @@ package com.example.vtarantik.popularmovies_jkmvvm.entity;
  */
 
 public class Trailer {
-	private int id;
+	private String id;
 
 	private String iso_639_1;
 
@@ -22,12 +22,12 @@ public class Trailer {
 	private String type;
 
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

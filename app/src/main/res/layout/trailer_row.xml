@@ -18,5 +18,9 @@
 		android:layout_marginBottom="@dimen/global_spacing_single"
 		android:onClick="@{() -> view.onItemClick(item)}">
 
+		<TextView
+			android:layout_width="match_parent" android:layout_height="match_parent"
+			android:text="@{item.name}"/>
+
 	</LinearLayout>
 </layout>

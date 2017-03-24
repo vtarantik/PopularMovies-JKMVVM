@@ -1,6 +1,8 @@
 package com.example.vtarantik.popularmovies_jkmvvm.dagger;
 
 import com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieListFragmentViewModel;
+import com.example.vtarantik.popularmovies_jkmvvm.viewmodel.ReviewFragmentViewModel;
+import com.example.vtarantik.popularmovies_jkmvvm.viewmodel.TrailerFragmentViewModel;
 
 import javax.inject.Singleton;
 
@@ -16,4 +18,8 @@ import dagger.Component;
 public interface AppComponent {
 
 	void inject(MovieListFragmentViewModel moviesViewModel);
+
+	void inject(ReviewFragmentViewModel reviewFragmentViewModel);
+
+	void inject(TrailerFragmentViewModel trailerFragmentViewModel);
 }
