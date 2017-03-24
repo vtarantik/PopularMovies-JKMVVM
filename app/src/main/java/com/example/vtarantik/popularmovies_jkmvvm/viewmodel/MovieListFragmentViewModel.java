@@ -82,7 +82,7 @@ public class MovieListFragmentViewModel extends ViewModel {
 
 			mIApiInteractor.getMovies(category)
 					.subscribeOn(Schedulers.newThread())
-//					.flatMap(mR -> mMovieDao.insertInBatch(mR, category))
+					.doOnNext(mR -> mMovieDao.insertInBatch(mR, category))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(movieResponse -> {
 

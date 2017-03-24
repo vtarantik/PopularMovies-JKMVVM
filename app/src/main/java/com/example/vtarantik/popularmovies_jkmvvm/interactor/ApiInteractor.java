@@ -3,6 +3,8 @@ package com.example.vtarantik.popularmovies_jkmvvm.interactor;
 import com.example.vtarantik.popularmovies_jkmvvm.BuildConfig;
 import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieResponse;
+import com.example.vtarantik.popularmovies_jkmvvm.entity.ReviewListResponse;
+import com.example.vtarantik.popularmovies_jkmvvm.entity.TrailerListResponse;
 import com.example.vtarantik.popularmovies_jkmvvm.rest.ApiDescription;
 
 import rx.Observable;
@@ -33,5 +35,17 @@ public class ApiInteractor implements IApiInteractor{
 			default:
 				throw new IllegalArgumentException("Unsupported movie category");
 		}
+	}
+
+
+	@Override
+	public Observable<TrailerListResponse> getTrailers(int movieId) {
+		return this.apiDescription.getTrailers(movieId, BuildConfig.MOVIEDB_API_KEY);
+	}
+
+
+	@Override
+	public Observable<ReviewListResponse> getReviews(int movieId) {
+		return this.apiDescription.getReviews(movieId,BuildConfig.MOVIEDB_API_KEY);
 	}
 }

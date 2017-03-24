@@ -1,8 +1,12 @@
 package com.example.vtarantik.popularmovies_jkmvvm.rest;
 
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieResponse;
+import com.example.vtarantik.popularmovies_jkmvvm.entity.ReviewListResponse;
+import com.example.vtarantik.popularmovies_jkmvvm.entity.TrailerListResponse;
 
 import retrofit2.http.GET;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -21,9 +25,24 @@ public interface ApiDescription {
 			@Query("page") int pageIndex
 	);
 
+
 	@GET("3/movie/top_rated")
 	Observable<MovieResponse> getTopRatedMovies(
 			@Query("api_key") String apiKey,
 			@Query("page") int pageIndex
+	);
+
+
+	@GET("3/movie/{movieId}/videos")
+	Observable<TrailerListResponse> getTrailers(
+			@Path("movieId") int movieId,
+			@Query("api_key") String apiKey
+	);
+
+
+	@GET("3/movie/{movieId}/reviews")
+	Observable<ReviewListResponse> getReviews(
+			@Path("movieId") int movieId,
+			@Query("api_key") String apiKey
 	);
 }
