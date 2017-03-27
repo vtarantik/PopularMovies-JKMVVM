@@ -1,10 +1,12 @@
 package com.example.vtarantik.popularmovies_jkmvvm.viewmodel;
 
+import android.content.Intent;
 import android.databinding.ObservableArrayList;
 
 import com.example.vtarantik.popularmovies_jkmvvm.BR;
 import com.example.vtarantik.popularmovies_jkmvvm.PopularMoviesApp;
 import com.example.vtarantik.popularmovies_jkmvvm.R;
+import com.example.vtarantik.popularmovies_jkmvvm.activity.MovieDetailActivity;
 import com.example.vtarantik.popularmovies_jkmvvm.db.dao.MovieDao;
 import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
@@ -54,19 +56,18 @@ public class MovieListFragmentViewModel extends ViewModel {
 
 		stateController = LCEStatefulLayout.StateController.create().build();
 
-		getPopularMoviesList();
 	}
 
 
 	public void getPopularMoviesList() {
 
-		getMoviesForCategory(Category.POPULAR);
+		getMoviesForCategoryFromDb(Category.POPULAR);
 	}
 
 
 	public void getTopRatedMoviesList() {
 
-		getMoviesForCategory(Category.TOP_RATED);
+		getMoviesForCategoryFromDb(Category.TOP_RATED);
 	}
 
 
@@ -75,26 +76,30 @@ public class MovieListFragmentViewModel extends ViewModel {
 	}
 
 
+	public void showMovieDetails(Movie movie){
+		Intent intent = MovieDetailActivity.newIntent(getActivity(),movie);
+		getActivity().startActivity(intent);
+	}
+
+
 	private void getMoviesForCategory(Category category) {
 		if(selectedCategory != category) {
 			selectedCategory = category;
-			stateController.setState(SimpleStatefulLayout.State.PROGRESS);
 
 			mIApiInteractor.getMovies(category)
 					.subscribeOn(Schedulers.newThread())
-					.doOnNext(mR -> mMovieDao.insertInBatch(mR, category))
+					.flatMap(movieResponse -> mMovieDao.insertInBatch(movieResponse,category)
+							.map(bool -> movieResponse))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(movieResponse -> {
-
 						if(movieResponse.getMovies() != null && !movieResponse.getMovies().isEmpty()) {
 							stateController.setState(LCEStatefulLayout.State.CONTENT);
 							updateData(movieResponse.getMovies());
 						} else {
-							getMoviesForCategoryFromDb(category);
-
+							onApiError(category);
 						}
 
-					}, throwable -> onError());
+					}, throwable -> onApiError(category));
 		}
 	}
 
@@ -102,6 +107,9 @@ public class MovieListFragmentViewModel extends ViewModel {
 	private void getMoviesForCategoryFromDb(Category category) {
 		if(selectedCategory != category) {
 			selectedCategory = category;
+
+			stateController.setState(SimpleStatefulLayout.State.PROGRESS);
+
 			mMovieDao.getMovies(category)
 					.subscribeOn(Schedulers.newThread())
 					.observeOn(AndroidSchedulers.mainThread())
@@ -110,16 +118,26 @@ public class MovieListFragmentViewModel extends ViewModel {
 							stateController.setState(LCEStatefulLayout.State.CONTENT);
 							updateData(movies1);
 						} else {
-							stateController.setState(LCEStatefulLayout.State.EMPTY);
+//							stateController.setState(LCEStatefulLayout.State.EMPTY);
+							onError(category);
 
 						}
-					}, throwable -> onError());
+					}, throwable -> onError(category));
 		}
 	}
 
 
-	private void onError() {
-		stateController.setState(SimpleStatefulLayout.State.EMPTY);
+	private void onError(Category category) {
+		selectedCategory = null;
+		getMoviesForCategory(category);
+//		stateController.setState(LCEStatefulLayout.State.EMPTY);
+	}
+
+
+	private void onApiError(Category category){
+//		selectedCategory = null;
+//		getMoviesForCategoryFromDb(category);
+		stateController.setState(LCEStatefulLayout.State.EMPTY);
 	}
 
 

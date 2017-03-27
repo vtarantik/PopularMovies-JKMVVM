@@ -1,8 +1,10 @@
 package com.example.vtarantik.popularmovies_jkmvvm.fragment;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.vtarantik.popularmovies_jkmvvm.R;
 import com.example.vtarantik.popularmovies_jkmvvm.activity.MovieDetailActivity;
@@ -24,7 +26,7 @@ public class TrailerListFragment extends ViewModelFragment<FragmentMovieTrailerB
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
-		setupViewModel(R.layout.fragment_movie_trailer,TrailerFragmentViewModel.class);
+		setupViewModel(R.layout.fragment_movie_trailer, TrailerFragmentViewModel.class);
 		super.onCreate(savedInstanceState);
 	}
 
@@ -39,6 +41,6 @@ public class TrailerListFragment extends ViewModelFragment<FragmentMovieTrailerB
 
 	@Override
 	public void onItemClick(Trailer entity) {
-		Log.d(TAG,"item clicked");
+		getViewModel().playTrailer(entity.getKey());
 	}
 }

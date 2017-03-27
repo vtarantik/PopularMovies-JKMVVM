@@ -1,13 +1,11 @@
 package com.example.vtarantik.popularmovies_jkmvvm.fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 
 import com.example.vtarantik.popularmovies_jkmvvm.R;
-import com.example.vtarantik.popularmovies_jkmvvm.activity.MovieDetailActivity;
 import com.example.vtarantik.popularmovies_jkmvvm.databinding.FragmentMovieListBinding;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.view.IMovieListView;
@@ -24,8 +22,7 @@ public class MovieListFragment extends ViewModelFragment<FragmentMovieListBindin
 
 	@Override
 	public void onItemClick(Movie movie) {
-		Intent intent = MovieDetailActivity.newIntent(getActivity(),movie);
-		startActivity(intent);
+		getViewModel().showMovieDetails(movie);
 	}
 
 
@@ -35,6 +32,8 @@ public class MovieListFragment extends ViewModelFragment<FragmentMovieListBindin
 		super.onCreate(savedInstanceState);
 
 		PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+
+		getPreferredMovieList(PreferenceManager.getDefaultSharedPreferences(getActivity()),getString(R.string.pref_sort_key));
 	}
 
 
@@ -48,6 +47,11 @@ public class MovieListFragment extends ViewModelFragment<FragmentMovieListBindin
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		getPreferredMovieList(sharedPreferences, key);
+	}
+
+
+	private void getPreferredMovieList(SharedPreferences sharedPreferences,String key){
 		if(key.equals(getString(R.string.pref_sort_key))){
 			String value = sharedPreferences.getString(key,getString(R.string.pref_sort_popular));
 

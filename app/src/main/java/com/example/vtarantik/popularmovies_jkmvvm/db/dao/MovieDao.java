@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
 import com.example.vtarantik.popularmovies_jkmvvm.db.model.Favourite;
+import com.example.vtarantik.popularmovies_jkmvvm.db.model.Popular;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieMapper;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieResponse;
@@ -90,8 +91,9 @@ public class MovieDao extends Dao {
 
 
 	public Observable<List<Movie>> getMovies(Category category) {
+		String orderBy = category.equals(Category.POPULAR)? Movie.COL_POPULARITY:Movie.COL_RATING;
 		return query(SELECT("*").FROM(Movie.TABLE_NAME)
-				.NATURAL_INNER_JOIN(category.getTableName()))
+				.NATURAL_INNER_JOIN(category.getTableName()).NATURAL_LEFT_OUTER_JOIN(Favourite.TABLE_NAME).ORDER_BY(orderBy+" DESC"))
 				.run()
 				.mapToList(MovieMapper.MAPPER);
 	}

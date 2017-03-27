@@ -16,10 +16,18 @@
 		android:orientation="horizontal"
 		android:layout_marginTop="@dimen/global_spacing_single"
 		android:layout_marginBottom="@dimen/global_spacing_single"
+		android:gravity="center_vertical"
 		android:onClick="@{() -> view.onItemClick(item)}">
 
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_play"/>
+
 		<TextView
-			android:layout_width="match_parent" android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/black"
 			android:text="@{item.name}"/>
 
 	</LinearLayout>

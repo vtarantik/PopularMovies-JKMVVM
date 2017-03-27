@@ -1,8 +1,11 @@
 package com.example.vtarantik.popularmovies_jkmvvm.viewmodel;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
+import android.net.Uri;
 
 import com.example.vtarantik.popularmovies_jkmvvm.BR;
 import com.example.vtarantik.popularmovies_jkmvvm.PopularMoviesApp;
@@ -55,6 +58,11 @@ public class TrailerFragmentViewModel extends ViewModel {
 	}
 
 
+	public void playTrailer(String key) {
+		watchYoutubeVideo(key);
+	}
+
+
 	private void getTrailersForMovie(Movie movie) {
 		stateController.setState(SimpleStatefulLayout.State.PROGRESS);
 
@@ -82,5 +90,17 @@ public class TrailerFragmentViewModel extends ViewModel {
 	private void updateData(List<Trailer> newTrailers) {
 		trailers.clear();
 		trailers.addAll(newTrailers);
+	}
+
+
+	private void watchYoutubeVideo(String id) {
+		Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+		Intent webIntent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse("http://www.youtube.com/watch?v=" + id));
+		try {
+			getActivity().startActivity(appIntent);
+		} catch(ActivityNotFoundException ex) {
+			getActivity().startActivity(webIntent);
+		}
 	}
 }

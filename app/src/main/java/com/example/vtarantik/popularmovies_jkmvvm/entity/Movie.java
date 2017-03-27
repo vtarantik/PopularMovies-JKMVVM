@@ -3,6 +3,7 @@ package com.example.vtarantik.popularmovies_jkmvvm.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.vtarantik.popularmovies_jkmvvm.db.model.Favourite;
 import com.google.gson.annotations.SerializedName;
 import com.hannesdorfmann.sqlbrite.objectmapper.annotation.Column;
 import com.hannesdorfmann.sqlbrite.objectmapper.annotation.ObjectMappable;
@@ -65,6 +66,9 @@ public class Movie implements Parcelable {
 	@Column(COL_POSTER)
 	@SerializedName("poster_path")
 	private String poster;
+
+	@Column(value = Favourite.COL_FAVOURITE, throwOnColumnIndexNotFound = false)
+	int favourite;
 
 
 	public Movie() {
@@ -143,10 +147,18 @@ public class Movie implements Parcelable {
 		this.poster = poster;
 	}
 
-	@Override
-	public int describeContents() {
-		return 0;
+	public boolean isFavourite() {
+		return favourite > 0;
 	}
+
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite ? 1 : 0;
+	}
+
+
+	@Override
+	public int describeContents() { return 0; }
+
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -159,7 +171,9 @@ public class Movie implements Parcelable {
 		dest.writeDouble(this.popularity);
 		dest.writeString(this.backdrop);
 		dest.writeString(this.poster);
+		dest.writeInt(this.favourite);
 	}
+
 
 	protected Movie(Parcel in) {
 		this.id = in.readInt();
@@ -171,17 +185,16 @@ public class Movie implements Parcelable {
 		this.popularity = in.readDouble();
 		this.backdrop = in.readString();
 		this.poster = in.readString();
+		this.favourite = in.readInt();
 	}
+
 
 	public static final Creator<Movie> CREATOR = new Creator<Movie>() {
 		@Override
-		public Movie createFromParcel(Parcel source) {
-			return new Movie(source);
-		}
+		public Movie createFromParcel(Parcel source) {return new Movie(source);}
+
 
 		@Override
-		public Movie[] newArray(int size) {
-			return new Movie[size];
-		}
+		public Movie[] newArray(int size) {return new Movie[size];}
 	};
 }

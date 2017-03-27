@@ -13,11 +13,25 @@
 		android:layout_width="match_parent" android:layout_height="match_parent"
 		android:orientation="vertical">
 
-		<ImageView
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_weight="1"
-			app:posterUrl="@{viewModel.movie.backdrop}" />
+			android:layout_weight="1">
+
+			<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:posterUrl="@{viewModel.movie.backdrop}" />
+
+			<CheckBox
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_alignParentRight="true"
+				android:button="@drawable/btn_star_selector"
+				android:checked="@={viewModel.favourite}"/>
+		</RelativeLayout>
+
 
 		<android.support.v4.view.ViewPager
 			android:id="@+id/fragment_movie_detail_viewpager"

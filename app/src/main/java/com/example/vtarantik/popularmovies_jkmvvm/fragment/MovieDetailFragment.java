@@ -25,7 +25,7 @@ public class MovieDetailFragment extends ViewModelFragment<FragmentMovieDetailBi
 		setupViewModel(R.layout.fragment_movie_detail, MovieDetailFragmentViewModel.class);
 		super.onCreate(savedInstanceState);
 
-		mMovieDetailPageAdapter = new MovieDetailPageAdapter(getFragmentManager(),getArguments().getParcelable(MovieDetailActivity.EXTRA_MOVIE));
+		mMovieDetailPageAdapter = new MovieDetailPageAdapter(getChildFragmentManager(),getArguments().getParcelable(MovieDetailActivity.EXTRA_MOVIE));
 
 		getBinding().fragmentMovieDetailViewpager.setAdapter(mMovieDetailPageAdapter);
 
