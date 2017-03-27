@@ -76,8 +76,8 @@ public class MovieListFragmentViewModel extends ViewModel {
 	}
 
 
-	public void showMovieDetails(Movie movie){
-		Intent intent = MovieDetailActivity.newIntent(getActivity(),movie);
+	public void showMovieDetails(Movie movie) {
+		Intent intent = MovieDetailActivity.newIntent(getActivity(), movie);
 		getActivity().startActivity(intent);
 	}
 
@@ -88,12 +88,11 @@ public class MovieListFragmentViewModel extends ViewModel {
 
 			mIApiInteractor.getMovies(category)
 					.subscribeOn(Schedulers.newThread())
-					.flatMap(movieResponse -> mMovieDao.insertInBatch(movieResponse,category)
+					.flatMap(movieResponse -> mMovieDao.insertInBatch(movieResponse, category)
 							.map(bool -> movieResponse))
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(movieResponse -> {
 						if(movieResponse.getMovies() != null && !movieResponse.getMovies().isEmpty()) {
-							stateController.setState(LCEStatefulLayout.State.CONTENT);
 							updateData(movieResponse.getMovies());
 						} else {
 							onApiError(category);
@@ -114,13 +113,13 @@ public class MovieListFragmentViewModel extends ViewModel {
 					.subscribeOn(Schedulers.newThread())
 					.observeOn(AndroidSchedulers.mainThread())
 					.subscribe(movies1 -> {
-						if(movies1 != null && !movies1.isEmpty()) {
-							stateController.setState(LCEStatefulLayout.State.CONTENT);
-							updateData(movies1);
-						} else {
-//							stateController.setState(LCEStatefulLayout.State.EMPTY);
-							onError(category);
+						if(category==selectedCategory) {
+							if(movies1 != null && !movies1.isEmpty()) {
+								updateData(movies1);
+							} else {
+								onError(category);
 
+							}
 						}
 					}, throwable -> onError(category));
 		}
@@ -129,19 +128,22 @@ public class MovieListFragmentViewModel extends ViewModel {
 
 	private void onError(Category category) {
 		selectedCategory = null;
-		getMoviesForCategory(category);
-//		stateController.setState(LCEStatefulLayout.State.EMPTY);
+		if(category != Category.FAVOURITE) {
+			getMoviesForCategory(category);
+		} else {
+			selectedCategory = category;
+			stateController.setState(LCEStatefulLayout.State.EMPTY);
+		}
 	}
 
 
-	private void onApiError(Category category){
-//		selectedCategory = null;
-//		getMoviesForCategoryFromDb(category);
+	private void onApiError(Category category) {
 		stateController.setState(LCEStatefulLayout.State.EMPTY);
 	}
 
 
 	private void updateData(List<Movie> newMovies) {
+		stateController.setState(LCEStatefulLayout.State.CONTENT);
 		movies.clear();
 		movies.addAll(newMovies);
 	}

@@ -99,6 +99,9 @@ public class MovieDao extends Dao {
 	}
 
 
+
+
+
 	public long clearTable() {
 		return db.delete(Movie.TABLE_NAME, null);
 	}

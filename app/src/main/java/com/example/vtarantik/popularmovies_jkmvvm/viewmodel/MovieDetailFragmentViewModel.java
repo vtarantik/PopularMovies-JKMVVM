@@ -54,7 +54,7 @@ public class MovieDetailFragmentViewModel extends ViewModel {
 			@Override
 			public void onPropertyChanged(Observable observable, int i) {
 				boolean checked = (boolean) ((ObservableField) observable).get();
-				mFavouriteDao.setFavourite(movie.get().getId(), checked)
+				mFavouriteDao.favourite(movie.get().getId(), checked)
 						.subscribeOn(Schedulers.newThread())
 						.observeOn(AndroidSchedulers.mainThread())
 						.subscribe(v -> {

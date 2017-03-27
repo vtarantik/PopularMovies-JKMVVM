@@ -6,6 +6,7 @@ import com.example.vtarantik.popularmovies_jkmvvm.db.model.Favourite;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.MovieMapper;
 import com.hannesdorfmann.sqlbrite.dao.Dao;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import rx.Observable;
 
@@ -30,11 +31,28 @@ public class FavouriteDao extends Dao{
 	}
 
 
-	public Observable<Void> setFavourite(int movieId, boolean isFavourite){
+	public Observable<Boolean> favourite(int movieId, boolean isFavourite){
+		return Observable.create(sub -> {
+			BriteDatabase.Transaction t = newTransaction();
+			try {
+				setFavourite(movieId,isFavourite);
+				t.markSuccessful();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				t.end();
+			}
+			sub.onNext(true);
+			sub.onCompleted();
+		});
+	}
+
+
+	public long setFavourite(int movieId, boolean isFavourite){
 		if(isFavourite){
-			return insert(Favourite.TABLE_NAME, MovieMapper.contentValues().id(movieId).build(),SQLiteDatabase.CONFLICT_REPLACE).map(id -> null);
+			return db.insert(Favourite.TABLE_NAME, MovieMapper.contentValues().id(movieId).build(),SQLiteDatabase.CONFLICT_REPLACE);
 		}
 
-		return delete(Favourite.TABLE_NAME,Movie.COL_ID + " = ?",String.valueOf(movieId)).map(id -> null);
+		return db.delete(Favourite.TABLE_NAME,Movie.COL_ID + " = ?",String.valueOf(movieId));
 	}
 }
