@@ -4,12 +4,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.vtarantik.popularmovies_jkmvvm.R;
+import com.example.vtarantik.popularmovies_jkmvvm.adapter.MoviesAdapter;
 import com.example.vtarantik.popularmovies_jkmvvm.databinding.FragmentMovieListBinding;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.view.IMovieListView;
 import com.example.vtarantik.popularmovies_jkmvvm.viewmodel.MovieListFragmentViewModel;
+
+import java.util.List;
 
 import cz.kinst.jakub.viewmodelbinding.ViewModelFragment;
 
@@ -18,7 +22,9 @@ import cz.kinst.jakub.viewmodelbinding.ViewModelFragment;
  * Created by vtarantik on 14/03/2017.
  */
 
-public class MovieListFragment extends ViewModelFragment<FragmentMovieListBinding,MovieListFragmentViewModel> implements IMovieListView, SharedPreferences.OnSharedPreferenceChangeListener{
+public class MovieListFragment extends ViewModelFragment<FragmentMovieListBinding, MovieListFragmentViewModel> implements IMovieListView, SharedPreferences.OnSharedPreferenceChangeListener {
+
+	private MoviesAdapter mMoviesAdapter;
 
 	@Override
 	public void onItemClick(Movie movie) {
@@ -28,12 +34,24 @@ public class MovieListFragment extends ViewModelFragment<FragmentMovieListBindin
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
-		setupViewModel(R.layout.fragment_movie_list,MovieListFragmentViewModel.class);
+		setupViewModel(R.layout.fragment_movie_list, MovieListFragmentViewModel.class);
 		super.onCreate(savedInstanceState);
 
 		PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
 
-		getPreferredMovieList(PreferenceManager.getDefaultSharedPreferences(getActivity()),getString(R.string.pref_sort_key));
+		if(savedInstanceState == null) {
+			getPreferredMovieList(PreferenceManager.getDefaultSharedPreferences(getActivity()), getString(R.string.pref_sort_key));
+		}
+	}
+
+
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		getBinding().executePendingBindings();
+
+		setupAdapter();
 	}
 
 
@@ -46,22 +64,43 @@ public class MovieListFragment extends ViewModelFragment<FragmentMovieListBindin
 
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		getPreferredMovieList(PreferenceManager.getDefaultSharedPreferences(getActivity()), getString(R.string.pref_sort_key));
+	}
+
+
+	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		getPreferredMovieList(sharedPreferences, key);
 	}
 
 
-	private void getPreferredMovieList(SharedPreferences sharedPreferences,String key){
-		if(key.equals(getString(R.string.pref_sort_key))){
-			String value = sharedPreferences.getString(key,getString(R.string.pref_sort_popular));
+	@Override
+	public void showData(List<Movie> movies) {
+		mMoviesAdapter.notifyDataSetChanged();
+		getBinding().list.scrollToPosition(0);
+	}
 
-			if(value.equals(getString(R.string.pref_sort_popular))){
+
+	private void getPreferredMovieList(SharedPreferences sharedPreferences, String key) {
+		if(key.equals(getString(R.string.pref_sort_key))) {
+			String value = sharedPreferences.getString(key, getString(R.string.pref_sort_popular));
+
+			if(value.equals(getString(R.string.pref_sort_popular))) {
 				getViewModel().getPopularMoviesList();
-			}else if(value.equals(getString(R.string.pref_sort_top_rated))){
+			} else if(value.equals(getString(R.string.pref_sort_top_rated))) {
 				getViewModel().getTopRatedMoviesList();
-			}else if(value.equals(getString(R.string.pref_sort_favourite))){
+			} else if(value.equals(getString(R.string.pref_sort_favourite))) {
 				getViewModel().getFavouriteMoviesList();
 			}
+		}
+	}
+
+	private void setupAdapter() {
+		if(mMoviesAdapter == null) {
+			mMoviesAdapter = new MoviesAdapter(this, getViewModel());
+			getBinding().list.setAdapter(mMoviesAdapter);
 		}
 	}
 }

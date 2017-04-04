@@ -22,6 +22,11 @@
 		<activity android:name=".activity.MovieDetailActivity"/>
 
 		<activity android:name=".activity.SettingsActivity"/>
+		
+		<provider
+			android:authorities="com.example.vtarantik.popularmovies_jkmvvm"
+			android:name=".db.provider.MoviesProvider"
+			android:exported="false"/>
 	</application>
 
 </manifest>

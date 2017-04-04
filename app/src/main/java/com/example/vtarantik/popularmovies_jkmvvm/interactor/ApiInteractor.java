@@ -39,13 +39,13 @@ public class ApiInteractor implements IApiInteractor{
 
 
 	@Override
-	public Observable<TrailerListResponse> getTrailers(int movieId) {
+	public Observable<TrailerListResponse> getTrailers(long movieId) {
 		return this.apiDescription.getTrailers(movieId, BuildConfig.MOVIEDB_API_KEY);
 	}
 
 
 	@Override
-	public Observable<ReviewListResponse> getReviews(int movieId) {
+	public Observable<ReviewListResponse> getReviews(long movieId) {
 		return this.apiDescription.getReviews(movieId,BuildConfig.MOVIEDB_API_KEY);
 	}
 }

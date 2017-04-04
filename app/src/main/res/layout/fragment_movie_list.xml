@@ -25,14 +25,11 @@
 			android:orientation="vertical">
 
 			<android.support.v7.widget.RecyclerView
-				android:id="@+id/movie_list"
+				android:id="@+id/list"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				app:layoutManager="@{LayoutManagers.grid(2)}"
-				app:items="@{viewModel.movies}"
-				app:itemBinding="@{viewModel.itemBinding}">
+				app:layoutManager="@{LayoutManagers.grid(2)}" />
 
-			</android.support.v7.widget.RecyclerView>
 		</FrameLayout>
 
 	</com.example.vtarantik.popularmovies_jkmvvm.state.LCEStatefulLayout>

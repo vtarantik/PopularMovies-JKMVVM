@@ -35,14 +35,14 @@ public interface ApiDescription {
 
 	@GET("3/movie/{movieId}/videos")
 	Observable<TrailerListResponse> getTrailers(
-			@Path("movieId") int movieId,
+			@Path("movieId") long movieId,
 			@Query("api_key") String apiKey
 	);
 
 
 	@GET("3/movie/{movieId}/reviews")
 	Observable<ReviewListResponse> getReviews(
-			@Path("movieId") int movieId,
+			@Path("movieId") long movieId,
 			@Query("api_key") String apiKey
 	);
 }

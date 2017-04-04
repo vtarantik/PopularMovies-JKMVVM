@@ -7,8 +7,6 @@ import android.databinding.ObservableList;
 import com.example.vtarantik.popularmovies_jkmvvm.BR;
 import com.example.vtarantik.popularmovies_jkmvvm.PopularMoviesApp;
 import com.example.vtarantik.popularmovies_jkmvvm.R;
-import com.example.vtarantik.popularmovies_jkmvvm.db.dao.MovieDao;
-import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Review;
 import com.example.vtarantik.popularmovies_jkmvvm.interactor.IApiInteractor;

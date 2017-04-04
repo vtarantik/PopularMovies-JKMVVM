@@ -18,7 +18,7 @@ public class Movie implements Parcelable {
 	private static final String TAG = Movie.class.getSimpleName();
 
 	public static final String TABLE_NAME = "movies";
-	public static final String COL_ID = "id";
+	public static final String COL_ID = "_id";
 	public static final String COL_TITLE= "title";
 	public static final String COL_OVERVIEW = "overview";
 	public static final String COL_RELEASE_DATE = "release_date";
@@ -29,7 +29,7 @@ public class Movie implements Parcelable {
 	public static final String COL_POSTER= "poster";
 
 	@Column(COL_ID)
-	private int id;
+	private long id;
 
 	@Column(COL_TITLE)
 	private String title;
@@ -74,7 +74,7 @@ public class Movie implements Parcelable {
 	public Movie() {
 	}
 
-	public Movie(int id, String title, String overview, String releaseDate, double rating,double popularity, String poster) {
+	public Movie(long id, String title, String overview, String releaseDate, double rating,double popularity, String poster) {
 		this.id = id;
 		this.title = title;
 		this.overview = overview;
@@ -84,11 +84,11 @@ public class Movie implements Parcelable {
 		this.poster = poster;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -162,7 +162,7 @@ public class Movie implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(this.id);
+		dest.writeLong(this.id);
 		dest.writeString(this.title);
 		dest.writeString(this.overview);
 		dest.writeString(this.releaseDate);
@@ -176,7 +176,7 @@ public class Movie implements Parcelable {
 
 
 	protected Movie(Parcel in) {
-		this.id = in.readInt();
+		this.id = in.readLong();
 		this.title = in.readString();
 		this.overview = in.readString();
 		this.releaseDate = in.readString();

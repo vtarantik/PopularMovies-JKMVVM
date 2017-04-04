@@ -7,20 +7,20 @@
 			name="view" type="com.example.vtarantik.popularmovies_jkmvvm.view.IMovieListView" />
 
 		<variable
-			name="item" type="com.example.vtarantik.popularmovies_jkmvvm.entity.Movie" />
+			name="data" type="com.example.vtarantik.popularmovies_jkmvvm.entity.Movie" />
 	</data>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:onClick="@{() -> view.onItemClick(item)}">
+		android:onClick="@{() -> view.onItemClick(data)}">
 
 		<ImageView
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/poster_tile_height"
 			android:scaleType="fitXY"
-			app:imageUrl="@{item.poster}" />
+			app:imageUrl="@{data.poster}" />
 
 	</LinearLayout>
 </layout>

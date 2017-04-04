@@ -82,4 +82,5 @@ dependencies {
 	compile "com.hannesdorfmann.sqlbrite:annotations:0.6.1"
 	compile "com.hannesdorfmann.sqlbrite:dao:0.6.1"
 	provided "com.hannesdorfmann.sqlbrite:object-mapper:0.6.1"
+
 }

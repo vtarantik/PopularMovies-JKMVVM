@@ -15,7 +15,7 @@ import rx.Observable;
 public interface IApiInteractor {
 	Observable<MovieResponse> getMovies(Category category);
 
-	Observable<TrailerListResponse> getTrailers(int movieId);
+	Observable<TrailerListResponse> getTrailers(long movieId);
 
-	Observable<ReviewListResponse> getReviews(int movieId);
+	Observable<ReviewListResponse> getReviews(long movieId);
 }

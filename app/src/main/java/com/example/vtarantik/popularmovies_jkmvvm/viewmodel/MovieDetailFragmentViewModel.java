@@ -1,31 +1,16 @@
 package com.example.vtarantik.popularmovies_jkmvvm.viewmodel;
 
+import android.content.ContentValues;
 import android.databinding.Observable;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
-import android.databinding.ObservableList;
-import android.os.Bundle;
-import android.util.Log;
 
-import com.example.vtarantik.popularmovies_jkmvvm.BR;
-import com.example.vtarantik.popularmovies_jkmvvm.PopularMoviesApp;
-import com.example.vtarantik.popularmovies_jkmvvm.R;
-import com.example.vtarantik.popularmovies_jkmvvm.activity.MovieDetailActivity;
-import com.example.vtarantik.popularmovies_jkmvvm.db.dao.FavouriteDao;
-import com.example.vtarantik.popularmovies_jkmvvm.db.dao.MovieDao;
-import com.example.vtarantik.popularmovies_jkmvvm.db.model.Category;
+import com.example.vtarantik.popularmovies_jkmvvm.db.contract.FavouriteMoviesContract;
+import com.example.vtarantik.popularmovies_jkmvvm.db.contract.PopularMoviesContract;
+import com.example.vtarantik.popularmovies_jkmvvm.db.helper.CursorHandler;
+import com.example.vtarantik.popularmovies_jkmvvm.db.helper.FavouriteCursorHandler;
 import com.example.vtarantik.popularmovies_jkmvvm.entity.Movie;
-import com.example.vtarantik.popularmovies_jkmvvm.entity.Review;
-import com.example.vtarantik.popularmovies_jkmvvm.entity.Trailer;
-import com.example.vtarantik.popularmovies_jkmvvm.state.LCEStatefulLayout;
 
-import javax.inject.Inject;
-
-import cz.kinst.jakub.view.SimpleStatefulLayout;
 import cz.kinst.jakub.viewmodelbinding.ViewModel;
-import me.tatarka.bindingcollectionadapter2.ItemBinding;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -38,33 +23,34 @@ public class MovieDetailFragmentViewModel extends ViewModel {
 
 	public final ObservableField<Boolean> favourite = new ObservableField<>();
 
-	@Inject
-	FavouriteDao mFavouriteDao;
-
 
 	@Override
 	public void onViewModelCreated() {
 		super.onViewModelCreated();
 
-		PopularMoviesApp.getAppComponent().inject(this);
+		CursorHandler<Boolean> handler = new FavouriteCursorHandler();
 
-		favourite.set(movie.get().isFavourite());
+		boolean isFav = handler.handle(getActivity().getContentResolver().query(FavouriteMoviesContract.FavouriteMoviesEntry.FAVOURITE,null,FavouriteMoviesContract.FavouriteMoviesEntry._ID + "=" + movie.get().getId(),null,null),null);
+
+		favourite.set(isFav);
 
 		favourite.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
 			@Override
 			public void onPropertyChanged(Observable observable, int i) {
 				boolean checked = (boolean) ((ObservableField) observable).get();
-				mFavouriteDao.favourite(movie.get().getId(), checked)
-						.subscribeOn(Schedulers.newThread())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(v -> {
-							boolean isFavourite = !movie.get().isFavourite();
-							movie.get().setFavourite(isFavourite);
-							favourite.set(isFavourite);
-						});
+
+				if(checked) {
+					ContentValues contentValues = new ContentValues();
+
+					contentValues.put(FavouriteMoviesContract.FavouriteMoviesEntry._ID, movie.get().getId());
+					contentValues.put(FavouriteMoviesContract.FavouriteMoviesEntry.COL_FAVOURITE, checked ? 1 : 0);
+
+					getActivity().getContentResolver().insert(FavouriteMoviesContract.FavouriteMoviesEntry.FAVOURITE, contentValues);
+				} else {
+					getActivity().getContentResolver().delete(FavouriteMoviesContract.FavouriteMoviesEntry.FAVOURITE, FavouriteMoviesContract.FavouriteMoviesEntry._ID + "=" + movie.get().getId(), null);
+				}
 			}
 		});
 	}
-
 
 }
